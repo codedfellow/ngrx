@@ -1,1 +1,17 @@
-<p>posts-list works!</p>
+<div class="row">
+    <div class="col-md-12">
+        <h3>Posts List</h3>
+        <table class="table table-striped">
+            <thead>
+                <th>Id</th>
+                <th>Title</th>
+                <th>Description</th>
+            </thead>
+            <tr *ngFor="let item of posts | async">
+                <td>{{item.id}}</td>
+                <td>{{item.title}}</td>
+                <td>{{item.description}}</td>
+            </tr>
+        </table>
+    </div>
+</div>
