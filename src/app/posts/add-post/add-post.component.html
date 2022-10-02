@@ -1,0 +1,30 @@
+<div class="row">
+    <div class="col-md-12">
+        <h3>Add Post</h3>
+        <hr>
+        <form [formGroup]="postForm" (ngSubmit)="onAddPost()">
+            <div class="mb-3">
+                <label for="">Title</label>
+                <input type="text" formControlName="title" id="" class="form-control">
+                <div *ngIf="postForm.get('title')?.touched && !postForm.get('title')?.valid">
+                    <div *ngIf="postForm.get('title')?.errors?.required">
+                        <p class="text-danger">Title is required</p>
+                    </div>
+                    <div *ngIf="postForm.get('title')?.errors?.minlength">
+                        <p class="text-danger">The length of the string must be greater than 6</p>
+                    </div>
+                </div>
+            </div>
+            <div class="mb-3">
+                <label for="">Description</label>
+                <textarea class="form-control" formControlName="description"></textarea>
+                <div class="text-danger">
+                    {{showDescriptionErrors()}}
+                </div>
+            </div>
+            <div>
+                <button type="submit" [disabled]="!postForm.valid" class="btn btn-primary">Add Post</button>
+            </div>
+        </form>
+    </div>
+</div>
