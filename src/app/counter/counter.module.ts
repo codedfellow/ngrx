@@ -6,6 +6,9 @@ import { CounterOutputComponent } from "./counter-output/counter-output.componen
 import { CounterComponent } from "./counter/counter.component";
 import { CustomCounterInputComponent } from "./custom-counter-input/custom-counter-input.component";
 import { FormsModule, ReactiveFormsModule } from "@angular/forms";
+import { StoreModule } from "@ngrx/store";
+import { counterReducer } from "./state/counter.reducer";
+import { COUNTER_STATE_NAME } from "./state/counter.selectors";
 
 const routes: Routes = [
     { path: '', component: CounterComponent },
@@ -22,7 +25,8 @@ const routes: Routes = [
         CommonModule,
         RouterModule.forChild(routes),
         FormsModule,
-        ReactiveFormsModule
+        ReactiveFormsModule,
+        StoreModule.forFeature(COUNTER_STATE_NAME,counterReducer)
     ]
 })
 
