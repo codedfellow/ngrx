@@ -10,6 +10,8 @@ import { HeaderComponent } from './shared/components/header/header.component';
 import { StoreDevtoolsModule } from '@ngrx/store-devtools';
 import { environment } from '../environments/environment';
 import { appReducer } from './store/app.state';
+import { EffectsModule } from '@ngrx/effects';
+import { HttpClientModule } from "@angular/common/http";
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { appReducer } from './store/app.state';
   imports: [
     BrowserModule,
     AppRoutingModule,
+    HttpClientModule,
     // StoreModule.forRoot(appReducer),
+    EffectsModule.forRoot([]),
     StoreModule.forRoot({}),
     FormsModule,
     StoreDevtoolsModule.instrument({ maxAge: 25, logOnly: environment.production }),
