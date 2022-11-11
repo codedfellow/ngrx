@@ -28,3 +28,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 
 ## Login Info
 Login with username: test@test.com password: 123456
+## Users registered while testing: Pass: 123456
+testuser@test.com
+testing@test.com
+tester@test.com
+testing1@test.com

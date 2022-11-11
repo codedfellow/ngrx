@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
 import { AppState } from './store/app.state';
+import { setErrorMessage } from './store/shared/shared.actions';
 import { getErrorMessage, getLoading } from './store/shared/shared.selector';
 
 @Component({
@@ -20,5 +21,9 @@ export class AppComponent implements OnInit {
   }
 
   constructor(private store: Store<AppState>) {
+  }
+
+  clearErrorMessage() {
+    this.store.dispatch(setErrorMessage({message:''}));
   }
 }
