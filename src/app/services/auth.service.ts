@@ -40,4 +40,32 @@ export class AuthService{
                 return 'Unknown error occurred, kindly try again';
         }
     }
+
+    setUserInLocalStorage(user: User) {
+        localStorage.setItem('userData', JSON.stringify(user));
+
+        this.runTimeoutInterval(user);
+    }
+
+    runTimeoutInterval(user: User) {
+        const todaysDate = new Date().getTime();
+        const expirationDate = user.expireDate.getTime();
+        const timeInterval = expirationDate - todaysDate;
+
+        setTimeout(() => {
+            //logout functionality or refresh token
+        }, timeInterval);
+    }
+    getUserFromLocalStorage() {
+        const userDateString = localStorage.getItem('userData');
+
+        if (userDateString) {
+            const userData = JSON.parse(userDateString);
+            const expirationDate = new Date(userData.expirationDate);
+            const user = new User(userData.email, userData.token, userData.localId, expirationDate);
+            this.runTimeoutInterval(user);
+            return user;
+        }
+        return null;
+    }
 }

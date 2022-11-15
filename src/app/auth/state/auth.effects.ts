@@ -2,11 +2,11 @@ import { Injectable } from "@angular/core";
 import { Router } from "@angular/router";
 import { createEffect, Actions, ofType } from "@ngrx/effects";
 import { Store } from "@ngrx/store";
-import { catchError, exhaustMap, map, of, tap } from "rxjs";
+import { catchError, exhaustMap, map, mergeMap, of, tap } from "rxjs";
 import { AuthService } from "src/app/services/auth.service";
 import { AppState } from "src/app/store/app.state";
 import { setErrorMessage, setLoadingSpinner } from "src/app/store/shared/shared.actions";
-import { loginStart, loginSuccess, signupStart, signupSuccess } from "./auth.actions";
+import { autoLogin, loginStart, loginSuccess, signupStart, signupSuccess } from "./auth.actions";
 
 @Injectable()
 export class AuthEffects{
@@ -22,7 +22,8 @@ export class AuthEffects{
                         .pipe(map(data => {
                             const user = this.authService.formatUser(data);
                             this.store.dispatch(setLoadingSpinner({ status: false }))
-                            this.store.dispatch(setErrorMessage({message:''}))
+                            this.store.dispatch(setErrorMessage({ message: '' }))
+                            this.authService.setUserInLocalStorage(user);
                             return loginSuccess({user})
                         }), catchError(err => {
                             console.log('err...', err.error.error.message);
@@ -52,6 +53,7 @@ export class AuthEffects{
             return this.authService.signUp(action.email, action.password).pipe(map(data => {
                 this.store.dispatch(setLoadingSpinner({ status: false }));
                 const user = this.authService.formatUser(data);
+                this.authService.setUserInLocalStorage(user);
                 return signupSuccess({ user });
             }), catchError(err => {
                 console.log('err...', err.error.error.message);
@@ -60,5 +62,13 @@ export class AuthEffects{
                 return of(setErrorMessage({ message: erroMessage }));
             }))
         }))
-    })
+    });
+
+    autoLogin$ = createEffect(() => {
+        return this.actions$.pipe(ofType(autoLogin),
+            map((action) => {
+                const user = this.authService.getUserFromLocalStorage();
+                console.log('user from auto login...', user);
+            }))
+    },{dispatch: false})
 }
