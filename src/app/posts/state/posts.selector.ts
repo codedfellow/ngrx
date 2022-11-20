@@ -8,10 +8,10 @@ export const getPosts = createSelector(getPostsState, state => {
     return state.posts;
 })
 
-export const getPostById = createSelector(getPostsState, (state: PostsState, props: { id: number}) => {
+export const getPostById = createSelector(getPostsState, (state: PostsState, props: { id: string}) => {
     return state.posts.find(x => x.id == props.id);
 })
 
-export const gePostByIdNew = (id: number) => createSelector(getPostsState, (state) => {
+export const gePostByIdNew = (id: string) => createSelector(getPostsState, (state) => {
     return state.posts.find(x => x.id == id);
 })

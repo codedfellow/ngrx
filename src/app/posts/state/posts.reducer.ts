@@ -1,13 +1,13 @@
 import { Action, createReducer, on } from "@ngrx/store"
-import { addPost, deletePost, updatePost } from "./posts.actions"
+import { addPost, deletePost, loadPostsSuccess, updatePost } from "./posts.actions"
 import { initialState, PostsState } from "./posts.state"
 
 const _postsReducer = createReducer(initialState, on(addPost, (state,action) => {
     let post = { ...action.post };
-    let postId:number = 0;
-    let checkId:number = 0;
+    let postId:string = '';
+    let checkId:string = '';
     state.posts.forEach(item => {
-        checkId = Number(item.id);
+        checkId = String(item.id);
         if (checkId >= postId) {
             postId = checkId + 1;
         }
@@ -34,6 +34,11 @@ const _postsReducer = createReducer(initialState, on(addPost, (state,action) => 
     return {
         ...state,
         posts: updatedPosts
+    }
+}), on(loadPostsSuccess, (state, action) => {
+    return {
+        ...state,
+        posts: action.posts
     }
 }))
 
