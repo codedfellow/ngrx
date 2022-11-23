@@ -1,19 +1,19 @@
 import { Action, createReducer, on } from "@ngrx/store"
-import { addPost, deletePost, loadPostsSuccess, updatePost } from "./posts.actions"
+import { addPost, addPostSuccess, deletePost, loadPostsSuccess, updatePost } from "./posts.actions"
 import { initialState, PostsState } from "./posts.state"
 
-const _postsReducer = createReducer(initialState, on(addPost, (state,action) => {
+const _postsReducer = createReducer(initialState, on(addPostSuccess, (state,action) => {
     let post = { ...action.post };
-    let postId:string = '';
-    let checkId:string = '';
-    state.posts.forEach(item => {
-        checkId = String(item.id);
-        if (checkId >= postId) {
-            postId = checkId + 1;
-        }
-    });
-    console.log('current postId...', postId);
-    post.id = postId;
+    // let postId:string = '';
+    // let checkId:string = '';
+    // state.posts.forEach(item => {
+    //     checkId = String(item.id);
+    //     if (checkId >= postId) {
+    //         postId = checkId + 1;
+    //     }
+    // });
+    // console.log('current postId...', postId);
+    // post.id = postId;
 
     return {
         ...state,
