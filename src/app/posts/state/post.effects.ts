@@ -1,6 +1,7 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
-import { map, mergeMap, switchMap } from "rxjs";
+import { RouterNavigatedAction, routerNavigatedAction, routerNavigationAction, ROUTER_NAVIGATION } from "@ngrx/router-store";
+import { filter, map, mergeMap, switchMap } from "rxjs";
 import { PostsService } from "src/app/services/posts.service";
 import { addPost, addPostSuccess, deletePost, deletePostSuccess, loadPosts, loadPostsSuccess, updatePost, updatePostSuccess } from "./posts.actions";
 
@@ -43,5 +44,24 @@ export class PostsEffects{
                 return deletePostSuccess({ id: action.id })
             }))
         }))
+    })
+
+    getSinglePost$ = createEffect(() => {
+        return this.actions$.pipe(ofType(ROUTER_NAVIGATION),
+            filter((r: RouterNavigatedAction) => {
+                // console.log('state one...', r);
+            return r.payload.routerState.url.startsWith('/posts/details');
+            }),
+            map((r: any) => {
+                // console.log('log router state...', r);
+                return r.payload.routerState['params']['id'];
+            }),
+            switchMap((id) => {
+                return this.postsService.getPostById(id).pipe(map((post) => {
+                    const postData = [{ ...post, id }];
+                    return loadPostsSuccess({ posts: postData });
+                }))
+            })
+        )
     })
 }
