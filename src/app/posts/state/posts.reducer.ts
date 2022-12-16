@@ -1,6 +1,6 @@
 import { Action, createReducer, on } from "@ngrx/store"
 import { addPost, addPostSuccess, deletePost, loadPostsSuccess, updatePost, updatePostSuccess } from "./posts.actions"
-import { initialState, PostsState } from "./posts.state"
+import { initialState, postsAdapter, PostsState } from "./posts.state"
 
 const _postsReducer = createReducer(initialState, on(addPostSuccess, (state,action) => {
     let post = { ...action.post };
@@ -15,31 +15,38 @@ const _postsReducer = createReducer(initialState, on(addPostSuccess, (state,acti
     // console.log('current postId...', postId);
     // post.id = postId;
 
-    return {
-        ...state,
-        posts: [...state.posts,post]
-    }
-}), on(updatePostSuccess, (state, action) => {
-    const updatedPosts = state.posts.map(x => {
-        return action.post.id == x.id ? action.post : x;
-    })
+    // return {
+    //     ...state,
+    //     posts: [...state.posts,post]
+    // }
 
-    return {
-        ...state,
-        posts: updatedPosts
-    }
+    return postsAdapter.addOne(action.post, state);
+}), on(updatePostSuccess, (state, action) => {
+    // const updatedPosts = state.posts.map(x => {
+    //     return action.post.id == x.id ? action.post : x;
+    // })
+
+    // return {
+    //     ...state,
+    //     posts: updatedPosts
+    // }
+    return postsAdapter.updateOne(action.post, state);
 }), on(deletePost, (state, action) => {
     
-    const updatedPosts = state.posts.filter( post => post.id != action.id);
-    return {
-        ...state,
-        posts: updatedPosts
-    }
+    // const updatedPosts = state.posts.filter( post => post.id != action.id);
+    // return {
+    //     ...state,
+    //     posts: updatedPosts
+    // }
+
+    return postsAdapter.removeOne(action.id,state)
 }), on(loadPostsSuccess, (state, action) => {
-    return {
-        ...state,
-        posts: action.posts
-    }
+    // return {
+    //     ...state,
+    //     posts: action.posts
+    // }
+
+    return postsAdapter.setAll(action.posts,state)
 }))
 
 export function postsReducer(state: PostsState | undefined, action: Action) {

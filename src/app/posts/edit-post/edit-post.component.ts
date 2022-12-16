@@ -8,7 +8,7 @@ import { Post } from 'src/app/models/posts.model';
 import { AppState } from 'src/app/store/app.state';
 import { PostsListComponent } from '../posts-list/posts-list.component';
 import { updatePost } from '../state/posts.actions';
-import { gePostByIdNew, getPostById } from '../state/posts.selector';
+import { getPostById } from '../state/posts.selector';
 
 @Component({
   selector: 'app-edit-post',

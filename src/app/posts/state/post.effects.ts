@@ -1,7 +1,9 @@
 import { Injectable } from "@angular/core";
 import { Actions, createEffect, ofType } from "@ngrx/effects";
+import { Update } from "@ngrx/entity/public_api";
 import { RouterNavigatedAction, routerNavigatedAction, routerNavigationAction, ROUTER_NAVIGATION } from "@ngrx/router-store";
 import { filter, map, mergeMap, switchMap } from "rxjs";
+import { Post } from "src/app/models/posts.model";
 import { PostsService } from "src/app/services/posts.service";
 import { addPost, addPostSuccess, deletePost, deletePostSuccess, loadPosts, loadPostsSuccess, updatePost, updatePostSuccess } from "./posts.actions";
 
@@ -33,7 +35,12 @@ export class PostsEffects{
     updatePost$ = createEffect(() => {
         return this.actions$.pipe(ofType(updatePost), switchMap((action) => {
             return this.postsService.updatePost(action.post).pipe(map(data => {
-                return updatePostSuccess({post: action.post})
+                const updatedPost: Update<Post> = {
+                    id: String(action.post.id),
+                    changes: action.post
+                }
+                // return updatePostSuccess({ post: action.post })
+                return updatePostSuccess({ post: updatedPost })
             }))
         }))
     })
