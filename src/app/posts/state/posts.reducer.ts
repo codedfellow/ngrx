@@ -20,7 +20,10 @@ const _postsReducer = createReducer(initialState, on(addPostSuccess, (state,acti
     //     posts: [...state.posts,post]
     // }
 
-    return postsAdapter.addOne(action.post, state);
+    return postsAdapter.addOne(action.post, {
+        ...state,
+        count: state.count + 1
+    });
 }), on(updatePostSuccess, (state, action) => {
     // const updatedPosts = state.posts.map(x => {
     //     return action.post.id == x.id ? action.post : x;
@@ -46,7 +49,10 @@ const _postsReducer = createReducer(initialState, on(addPostSuccess, (state,acti
     //     posts: action.posts
     // }
 
-    return postsAdapter.setAll(action.posts,state)
+    return postsAdapter.setAll(action.posts, {
+        ...state,
+        count: action.posts.length
+    })
 }))
 
 export function postsReducer(state: PostsState | undefined, action: Action) {

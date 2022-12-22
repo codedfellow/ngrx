@@ -1,3 +1,4 @@
+import { state } from "@angular/animations";
 import { createFeatureSelector, createSelector } from "@ngrx/store";
 import { RouterStateUrl } from "src/app/store/router/custom-serializer";
 import { getCurrentRoute } from "src/app/store/router/router-selector";
@@ -22,3 +23,4 @@ export const getPostById = createSelector(getPostsEntities, getCurrentRoute, (po
 // export const gePostByIdNew = (id: string) => createSelector(getPostsState, (state) => {
 //     return state.posts.find(x => x.id == id);
 // })
+export const getCount = createSelector(getPostsState, (state) => state.count);

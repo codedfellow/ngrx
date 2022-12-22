@@ -1,6 +1,6 @@
 <div class="row">
     <div class="col-md-8">
-        <h3>Posts List</h3>
+        <h3>Posts List ({{count| async }})</h3>
         <div>
             <a href="#" class="btn btn-primary" [routerLink]="['/posts','add']" routerLinkActive="router-link-active" >Add Post</a>
         </div>
@@ -13,8 +13,8 @@
             </thead>
             <tr *ngFor="let item of posts | async">
                 <td>{{item.id}}</td>
-                <td>{{item.title}}</td>
-                <td>{{item.description}}</td>
+                <td style="word-break: break-all;">{{item.title}}</td>
+                <td style="word-break: break-all;">{{item.description}}</td>
                 <td>
                     <a class="btn btn-primary" [routerLink]="['/posts','edit',item.id]" routerLinkActive="router-link-active" >Update</a>
                     <button class="btn btn-danger" (click)="onDeletePost(item.id)">Delete</button>

@@ -7,7 +7,9 @@ import { Post } from "src/app/models/posts.model"
 //     posts: Post[]
 // }
 
-export interface PostsState extends EntityState<Post> {}
+export interface PostsState extends EntityState<Post> {
+    count: number;
+}
 
 // export const initialState: PostsState = {
 //     posts: [
@@ -17,8 +19,33 @@ export interface PostsState extends EntityState<Post> {}
 //     ]
 // }
 
-export const postsAdapter = createEntityAdapter<Post>()
+export const postsAdapter = createEntityAdapter<Post>({
+    // selectId: (post: Post) => post.id
+    sortComparer: sortByName
+})
+
+//sort by ascending
+// export function sortByName(a: Post, b: Post): number {
+//     return a.title.localeCompare(b.title);
+// }
+
+//sort by descending
+export function sortByName(a: Post, b: Post): number {
+    const compare = a.title.localeCompare(b.title);
+
+    if (compare > 0) {
+        return -1;
+    }
+
+    if (compare < 0) {
+        return 1;
+    }
+
+    return compare;
+}
 // export const initialState: PostsState = {
 //     posts: []
 // }
-export const initialState: PostsState = postsAdapter.getInitialState();
+export const initialState: PostsState = postsAdapter.getInitialState({
+    count: 0
+});
